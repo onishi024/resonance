@@ -38,7 +38,7 @@ class App extends Component {
     return (
       <div className="App">
         <h1>要員別山積表</h1>
-        <h2>保守債権G(GAH0)</h2>
+        <h2>保守債権G(GAH0) test change</h2>
         <HandsonGrid rows={this.state.rows} setState={state => this._setState(state)} />
       </div>
     );
