@@ -54,7 +54,7 @@ const HandsonGrid = ({rows, setState}) => {
            columns={columns}
            columnSorting={true}
            width="600"
-           height="300"
+           height="3z00"
            stretchH="all"
            fixedColumnsLeft="4"
            manualColumnResize={true} />
