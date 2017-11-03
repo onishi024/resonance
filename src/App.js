@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import HandsonGrid from './grid/HandsonGrid'
-import Grid from './grid/Grid'
 
 class App extends Component {
   state = {
