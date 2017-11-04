@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "gh-pages": "^1.0.0",
+    "react-bootstrap": "^0.31.5",
     "react-handsontable": "^0.3.1"
   }
 }
