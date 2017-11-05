@@ -1,0 +1,58 @@
+[
+  {
+    data: 'no',
+    editor: false
+  },
+  {
+    data: 'ankenno',
+    editor: false
+  },
+  {
+    data: 'task',
+    editor: false
+  },
+  {
+    data: 'ankenname',
+    editor: false
+  },
+  {
+    data: 'yama',
+    editor: false
+  },
+  {
+    data: 'member',
+    editor: 'select',
+    selectOptions: members.map(member => member.name),
+    allowInvalid: false
+  },
+  {
+    data: 'd201710',
+    type: 'numeric',
+    allowInvalid: false
+  },
+  {
+    data: 'd201711',
+    type: 'numeric',
+    allowInvalid: false
+  },
+  {
+    data: 'd201712',
+    type: 'numeric',
+    allowInvalid: false
+  },
+  {
+    data: 'd201801',
+    type: 'numeric',
+    allowInvalid: false
+  },
+  {
+    data: 'd201802',
+    type: 'numeric',
+    allowInvalid: false
+  },
+  {
+    data: 'd201803',
+    type: 'numeric',
+    allowInvalid: false
+  }
+]
