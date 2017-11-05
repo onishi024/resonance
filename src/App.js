@@ -3,6 +3,7 @@ import HandsonGrid from './grid/HandsonGrid'
 import Rechart from './chart/Rechart'
 import Header from './header/Header'
 import TeamLabel from './header/TeamLabel'
+import Tally from './tally/Tally'
 
 class App extends Component {
   state = {
@@ -59,7 +60,6 @@ class App extends Component {
   }
 
   _onChange(selected_team) {
-    console.log(selected_team);
     this.setState(
       selected_team
     )
@@ -71,11 +71,12 @@ class App extends Component {
         <Header selected_team={this.state.selected_team}
                 teams={this.state.teams}
                 onChange={selected_team => this._onChange(selected_team)} />
-        <TeamLabel selected_team={this.state.selected_team} />
+              <TeamLabel selected_team={this.state.selected_team} onChange={selected_team => this._onChange(selected_team)}/>
         <HandsonGrid rows = {this.state.rows.filter(row => { return row.team === this.state.selected_team.name })}
                      members = {this.state.members.filter(value => { return value.team === this.state.selected_team.name })} />
         <hr />
-        <Rechart />
+        <Tally rows = {this.state.rows.filter(row => { return row.team === this.state.selected_team.name })} />
+
       </div>
     )
   }
