@@ -1,24 +1,21 @@
 import React from 'react'
 
-const Header = ({selected_team, teams, onChange}) => {
+const Header = ({groups, onChange}) => {
 
-  let teamname
+  let group_id
 
   const _onChange = () => {
-    //0要素取り出すの微妙だし、一意なデータ構造にしたい
-    const team = teams.filter(team => team.name === teamname.value)[0]
-    onChange({
-      selected_team: team
-    })
+    onChange(group_id.value)
   }
 
   return (
    <form>
        <select onChange={() => _onChange()}
-               ref={el => teamname = el} >
-         {teams.map(team =>
-           <option value={team.name}>{team.name}</option>)}
+               ref={el => group_id = el} >
+         {groups.map(group =>
+           <option key={group.id} value={group.id}>{group.name}</option>)}
        </select>
+       
    </form>)
 }
 

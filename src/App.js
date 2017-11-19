@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as RedmineAPI from './api/RedmineAPI'
 import HandsonGrid from './grid/HandsonGrid'
 import Rechart from './chart/Rechart'
 import Header from './header/Header'
@@ -6,80 +7,117 @@ import TeamLabel from './header/TeamLabel'
 import Tally from './tally/Tally'
 
 class App extends Component {
-  state = {
-    selected_team: {name: "あんこうチーム", icon: "GP_ankou.png"},
-    teams: [{name: "あんこうチーム", icon: "GP_ankou.png"},
-            {name: "カバさんチーム", icon: "GP_kaba.png"},
-            {name: "アヒルさんチーム", icon: "GP_ahiru.png"},
-            {name: "ウサギさんチーム", icon: "GP_usagi.png"},
-            {name: "カメさんチーム", icon: "GP_kame.png"}],
-    members: [{team: "あんこうチーム", name: "未アサイン", grade: "G2"},
-              {team: "あんこうチーム", name: "西住みほ", grade: "G2"},
-              {team: "あんこうチーム", name: "秋山優花里", grade: "G2"},
-              {team: "あんこうチーム", name: "武部沙織", grade: "G2"},
-              {team: "あんこうチーム", name: "冷泉麻子", grade: "G2"},
-              {team: "あんこうチーム", name: "五十鈴華", grade: "G2"},
-              {team: "アヒルさんチーム", name: "磯辺典子", grade: "G2"},
-              {team: "アヒルさんチーム", name: "河西忍", grade: "G1"},
-              {team: "アヒルさんチーム", name: "近藤妙子", grade: "G1"},
-              {team: "アヒルさんチーム", name: "佐々木あけび", grade: "G1"},
-              {team: "カバさんチーム", name: "カエサル", grade: "G2"},
-              {team: "カバさんチーム", name: "おりょう", grade: "G2"},
-              {team: "カバさんチーム", name: "左衛門佐", grade: "G2"},
-              {team: "カバさんチーム", name: "エルヴィン", grade: "G2"},
-              {team: "ウサギさんチーム", name: "澤梓", grade: "G1"},
-              {team: "ウサギさんチーム", name: "山郷あゆみ", grade: "G1"},
-              {team: "ウサギさんチーム", name: "大野あや", grade: "G1"},
-              {team: "ウサギさんチーム", name: "宇津木優季", grade: "G1"},
-              {team: "ウサギさんチーム", name: "阪口桂利奈", grade: "G1"},
-              {team: "ウサギさんチーム", name: "丸山紗希", grade: "G1"},
-              {team: "カメさんチーム", name: "角谷杏", grade: "G3"},
-              {team: "カメさんチーム", name: "河嶋桃", grade: "G3"},
-              {team: "カメさんチーム", name: "小山柚子", grade: "G3"}],
-      rows: [{ no: 1, team: "あんこうチーム", ankenno: 'Title 1', task: 'JKM00001', ankenname: 'あんこう案件1', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 2, team: "あんこうチーム", ankenno: 'Title 2', task: 'JKM00002', ankenname: 'あんこう案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 3, team: "あんこうチーム", ankenno: 'Title 2', task: 'JKM00002', ankenname: 'あんこう案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 4, team: "あんこうチーム", ankenno: 'Title 2', task: 'JKM00002', ankenname: 'あんこう案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 5, team: "あんこうチーム", ankenno: 'Title 3', task: 'JKM00003', ankenname: 'あんこう案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 6, team: "あんこうチーム", ankenno: 'Title 3', task: 'JKM00003', ankenname: 'あんこう案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 7, team: "あんこうチーム", ankenno: 'Title 4', task: 'JKM00004', ankenname: 'あんこう案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 8, team: "あんこうチーム", ankenno: 'Title 4', task: 'JKM00004', ankenname: 'あんこう案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 9, team: "アヒルさんチーム", ankenno: 'Title 2', task: 'JKM00002', ankenname: 'アヒルさん案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 10, team: "アヒルさんチーム", ankenno: 'Title 2', task: 'JKM00004', ankenname: 'アヒルさん案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 11, team: "アヒルさんチーム", ankenno: 'Title 2', task: 'JKM00005', ankenname: 'アヒルさん案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 12, team: "アヒルさんチーム", ankenno: 'Title 2', task: 'JKM00004', ankenname: 'アヒルさん案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 13, team: "カバさんチーム", ankenno: 'Title 2', task: 'JKM00002', ankenname: 'カバさん案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 14, team: "カバさんチーム", ankenno: 'Title 2', task: 'JKM00002', ankenname: 'カバさん案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 15, team: "カバさんチーム", ankenno: 'Title 2', task: 'JKM00002', ankenname: 'カバさん案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 16, team: "カバさんチーム", ankenno: 'Title 2', task: 'JKM00008', ankenname: 'カバさん案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 17, team: "カメさんチーム", ankenno: 'Title 2', task: 'JKM00008', ankenname: 'カメさん案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 18, team: "カメさんチーム", ankenno: 'Title 2', task: 'JKM00002', ankenname: 'カメさん案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 19, team: "カメさんチーム", ankenno: 'Title 2', task: 'JKM00010', ankenname: 'カメさん案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 20, team: "カメさんチーム", ankenno: 'Title 2', task: 'JKM00002', ankenname: 'カメさん案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 },
-             { no: 21, team: "ウサギさんチーム", ankenno: 'Title 2', task: 'JKM00002', ankenname: 'アリクイ案件2', yama: '100', member: "未アサイン", d201710: 20, d201711: 15, d201712: 30, d201801: 5, d201802: 10, d201803: 15 }]
+
+  //コンポーネント生成時の挙動
+  componentDidMount(){
+    this._onFetch()
   }
 
-  _onChange(selected_team) {
-    this.setState(
-      selected_team
+  //初期処理　グループ読み込み
+  _onFetch() {
+    RedmineAPI.get1("groups")
+      .then(groups => {
+        this.setState({groups})
+        this._onChangeGroup(this.state.selected_group_id)
+      }
     )
+  }
+
+  //グループが変更された場合の情報読み込み
+  _onChangeGroup(selected_group_id) {
+    let issues = []
+    let rows = []
+
+    this.setState(
+      {selected_group_id}
+    )
+
+    //現在選択されているグループ配下のユーザを取得し、
+    //ユーザidに紐付くissueを取得する。
+    //issuesからrowsに整形し、stateにセットする。
+    //[リファクタリング]コールバック地獄
+    RedmineAPI.get2("groups", selected_group_id, "include=users")
+      .then(group_users => {
+        this.setState({group_users})
+        group_users.group.users.length === 0 ?
+          this.setState({issues: [], rows: []}) :
+          group_users.group.users.map(user => {
+            //[リファクタリング]全部取り出してからsetStateしたい
+            RedmineAPI.get3("issues", "assigned_to_id=" + user.id)
+              .then(_issues => {
+                issues.push(..._issues)
+                rows.push(...this._getRows(_issues))
+              })
+              .then(() => {
+                this.setState({issues, rows})
+              })
+            }
+          )
+      })
+  }
+
+  //テーブルが変更された際のログ出力
+  _onChangeRows(rows){
+    console.log("change rows")
+    console.log(this.state.rows);
+  }
+
+  _getSelectedGroup(selected_group_id){
+    //[リファクタリング]配列番号で出すの保守性低い
+    this.state.groups.filter(group => group.id === selected_group_id)[0]
+  }
+
+  //issuesをrowsに変換して返却
+  _getRows(issues){
+    let rows = []
+    //[機能不十分]案件名等取得するロジック要
+    issues.map(issue =>
+      rows.push({
+        no: issue.id,
+        team: "あんこうチーム",
+        ankenno: 'Title 1',
+        task: 'JKM00001',
+        ankenname: issue.project.name,
+        yama: issue.estimated_hours,
+        member: issue.assigned_to.name,
+        //[リファクタリング]配列番号で出すの保守性低い
+        d201710: Number(issue.custom_fields[0].value),
+        d201711: Number(issue.custom_fields[1].value),
+        d201712: Number(issue.custom_fields[2].value),
+        d201801: Number(issue.custom_fields[3].value),
+        d201802: Number(issue.custom_fields[4].value),
+        d201803: Number(issue.custom_fields[5].value)
+      })
+    )
+    return rows
+  }
+
+  state = {
+    groups: [], //存在するすべてのグループ
+    selected_group_id: 12, //現在選択されているグループ
+    //現在選択されているグループ配下のユーザ
+    group_users: {
+      "group": {id: 12, name: "あんこうチーム", users: []}
+    },
+    issues: [], //現在選択されているグループに関連するチケット
+    rows: [] //現在選択されているグループに関連するチケットを要員別山積用に整形した列群
   }
 
   render() {
     return (
       <div className="App">
-        <Header selected_team={this.state.selected_team}
-                teams={this.state.teams}
-                onChange={selected_team => this._onChange(selected_team)} />
-              <TeamLabel selected_team={this.state.selected_team} onChange={selected_team => this._onChange(selected_team)}/>
-        <HandsonGrid rows = {this.state.rows.filter(row => { return row.team === this.state.selected_team.name })}
-                     members = {this.state.members.filter(value => { return value.team === this.state.selected_team.name })} />
+        <Header selected_team={this.state.selected_group_id} groups={this.state.groups} onChange={selected_team => this._onChangeGroup(selected_team)} />
+        <h1>#{this.state.selected_group_id}</h1>
         <hr />
-        <Tally rows = {this.state.rows.filter(row => { return row.team === this.state.selected_team.name })} />
-
+        <HandsonGrid rows = {this.state.rows} members = {this.state.group_users.group.users} onChange={() => this._onChangeRows()} />
+        <input type="button" value="更新" />
       </div>
     )
   }
 }
 
 export default App;
+
+//
+// <TeamLabel selected_team={this.state.selected_team} onChange={selected_team => this._onChange(selected_team)}/>
+// <Tally rows = {this.state.rows.filter(row => { return row.team === this.state.selected_team.name })} />

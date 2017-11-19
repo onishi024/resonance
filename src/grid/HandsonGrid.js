@@ -1,7 +1,7 @@
 import React from 'react'
 import HotTable from 'react-handsontable'
 
-const HandsonGrid = ({rows, members}) => {
+const HandsonGrid = ({rows, members, onChange}) => {
 
    //カラムヘッダー定義
    const colHeaders = ["#", "案件管理番号", "タスクコード", "案件名称", "山積", "要員",
@@ -110,8 +110,8 @@ const HandsonGrid = ({rows, members}) => {
    const mergeCells = []
    var cursor = 0
    for (let i in sumRows){
-     //クソダサ繰り返し書き換えたい
-     mergeCells.push({row: cursor, col: 0, rowspan: sumRows[i].count + 1, colspan: 1})
+     //[リファクタリング]クソダサ繰り返し書き換えたい
+     //  mergeCells.push({row: cursor, col: 0, rowspan: sumRows[i].count + 1, colspan: 1})
      mergeCells.push({row: cursor, col: 1, rowspan: sumRows[i].count + 1, colspan: 1})
      mergeCells.push({row: cursor, col: 2, rowspan: sumRows[i].count + 1, colspan: 1})
      mergeCells.push({row: cursor, col: 3, rowspan: sumRows[i].count + 1, colspan: 1})
@@ -123,13 +123,16 @@ const HandsonGrid = ({rows, members}) => {
    const cellSetting = (row, col, prop) => {
       var cellProperties = {};
 
-      if (finalRows[row].no === "*") {
-        cellProperties.readOnly = true;
-        // cellProperties.renderer = (instance, td) => {
-        //   td.style.backgroundColor = '#95eaea';
-        //   return td
-        // }
+      if (finalRows.length !== 0){
+        if (finalRows[row].no === "*") {
+          cellProperties.readOnly = true;
+          // cellProperties.renderer = (instance, td) => {
+          //   td.style.backgroundColor = '#95eaea';
+          //   return td
+          // }
+        }
       }
+
       return cellProperties
    }
 
@@ -141,12 +144,13 @@ const HandsonGrid = ({rows, members}) => {
            columns={columns}
            columnSorting={false}
            width="1000"
-          //  height="800"
+           //  height="800"
            stretchH="all"
            fixedColumnsLeft="6"
            manualColumnResize={true}
            mergeCells={mergeCells}
            cells={cellSetting}
+           afterChange={onChange}
            />
 }
 
