@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import * as RedmineAPI from './api/RedmineAPI'
-import HandsonGrid from './grid/HandsonGrid'
-import Rechart from './chart/Rechart'
 import Header from './header/Header'
-import TeamLabel from './header/TeamLabel'
-import Tally from './tally/Tally'
+import HandsonGrid from './grid/HandsonGrid'
+import Edit from './edit/Edit'
 
 class App extends Component {
 
@@ -62,11 +61,6 @@ class App extends Component {
     console.log(this.state.rows);
   }
 
-  _getSelectedGroup(selected_group_id){
-    //[リファクタリング]配列番号で出すの保守性低い
-    this.state.groups.filter(group => group.id === selected_group_id)[0]
-  }
-
   //issuesをrowsに変換して返却
   _getRows(issues){
     let rows = []
@@ -74,19 +68,39 @@ class App extends Component {
     issues.map(issue =>
       rows.push({
         no: issue.id,
-        team: "あんこうチーム",
-        ankenno: 'Title 1',
-        task: 'JKM00001',
-        ankenname: issue.project.name,
-        yama: issue.estimated_hours,
+        kind: issue.custom_fields[0].value,
+        ankenno: issue.custom_fields[1].value,
+        taskcode: issue.custom_fields[2].value,
+        subcode: issue.custom_fields[3].value,
+        ankenname: issue.subject,
+        subname: issue.subject,
+        estimate: issue.estimated_hours,
         member: issue.assigned_to.name,
         //[リファクタリング]配列番号で出すの保守性低い
-        d201710: Number(issue.custom_fields[0].value),
-        d201711: Number(issue.custom_fields[1].value),
-        d201712: Number(issue.custom_fields[2].value),
-        d201801: Number(issue.custom_fields[3].value),
-        d201802: Number(issue.custom_fields[4].value),
-        d201803: Number(issue.custom_fields[5].value)
+        y04: Number(issue.custom_fields[4].value),
+        p04: Number(issue.custom_fields[5].value),
+        y05: Number(issue.custom_fields[6].value),
+        p05: Number(issue.custom_fields[7].value),
+        y06: Number(issue.custom_fields[8].value),
+        p06: Number(issue.custom_fields[9].value),
+        y07: Number(issue.custom_fields[10].value),
+        p07: Number(issue.custom_fields[11].value),
+        y08: Number(issue.custom_fields[12].value),
+        p08: Number(issue.custom_fields[13].value),
+        y09: Number(issue.custom_fields[14].value),
+        p09: Number(issue.custom_fields[15].value),
+        y10: Number(issue.custom_fields[16].value),
+        p10: Number(issue.custom_fields[17].value),
+        y11: Number(issue.custom_fields[18].value),
+        p11: Number(issue.custom_fields[19].value),
+        y12: Number(issue.custom_fields[20].value),
+        p12: Number(issue.custom_fields[21].value),
+        y01: Number(issue.custom_fields[22].value),
+        p01: Number(issue.custom_fields[23].value),
+        y02: Number(issue.custom_fields[24].value),
+        p02: Number(issue.custom_fields[25].value),
+        y03: Number(issue.custom_fields[26].value),
+        p03: Number(issue.custom_fields[27].value)
       })
     )
     return rows
@@ -106,18 +120,39 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header selected_team={this.state.selected_group_id} groups={this.state.groups} onChange={selected_team => this._onChangeGroup(selected_team)} />
-        <h1>#{this.state.selected_group_id}</h1>
-        <hr />
-        <HandsonGrid rows = {this.state.rows} members = {this.state.group_users.group.users} onChange={() => this._onChangeRows()} />
-        <input type="button" value="更新" />
+        <Header
+          selected_group_id={this.state.selected_group_id}
+          groups={this.state.groups}
+          onChange={selected_team => this._onChangeGroup(selected_team)} />
+        <Tabs>
+          <TabList>
+            <Tab disabled>山積表</Tab>
+            <Tab>要員別山積表</Tab>
+            <Tab>要員別集計情報</Tab>
+            <Tab>案件情報編集</Tab>
+          </TabList>
+          <TabPanel>
+            山積表
+          </TabPanel>
+          <TabPanel>
+            <HandsonGrid
+              rows = {this.state.rows}
+              members = {this.state.group_users.group.users}
+              onChange={() => this._onChangeRows()} />
+          </TabPanel>
+          <TabPanel>
+            要員別集計情報
+          </TabPanel>
+          <TabPanel>
+            <Edit
+              issues = {this.state.issues}
+              members = {this.state.group_users.group.users}
+              onChange={() => this._onChangeRows()} />
+          </TabPanel>
+        </Tabs>
       </div>
     )
   }
 }
 
 export default App;
-
-//
-// <TeamLabel selected_team={this.state.selected_team} onChange={selected_team => this._onChange(selected_team)}/>
-// <Tally rows = {this.state.rows.filter(row => { return row.team === this.state.selected_team.name })} />
