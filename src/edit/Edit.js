@@ -37,7 +37,7 @@ class Edit extends Component {
 
   _onChangeRows = () => {
     let rows = EditUtils.recal_rows(this.state.rows)
-    this.setState({ rows })
+    this.setState({rows})
   }
 
   _onClick = () => {
