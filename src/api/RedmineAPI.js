@@ -30,8 +30,21 @@ export const get3 = (datakind, format) =>
   .then(response => response.json())
   .then(json => json[datakind])
 
+//post(未検討)
 export const post = issue =>
   fetch(url,
     {method: 'POST',
      headers: headers,
      body: JSON.stringify(issue)})
+
+//redmine/datakind/update.issue.id.json
+export const put = (datakind, update) => {
+  console.log(url + datakind + `/` + update.issue.id + `.json`)
+  fetch(url + datakind + `/` + update.issue.id + `.json` ,
+    {method: 'PUT',
+     headers: headers,
+     body: JSON.stringify(update)})
+   .then(res =>
+     res.ok ? res.json(): console.log('Network response was not ok.'))
+   .catch(err => console.log('There has been a problem with your put operation: ' + err.message))
+}
